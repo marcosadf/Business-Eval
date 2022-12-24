@@ -1,0 +1,53 @@
+version: '3'
+services:
+  # web-server:
+  #   container_name: php-apache
+  #   image: php:8.0-apache
+  #   volumes:
+  #     - ./web:/var/www/html/
+  #   ports:
+  #     - 8000:80
+
+  db-postgres:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "12345678"
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data 
+    networks:
+      - postgres-network
+      
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "admin@businesseval.com"
+      PGADMIN_DEFAULT_PASSWORD: "12345678"
+    ports:
+      - "16543:80"
+    depends_on:
+      - db-postgres
+    networks:
+      - postgres-network
+
+  # api:
+  #   build: .
+  #   links:
+  #     - mysql
+  #   container_name: conjifs
+  #   restart: on-failure
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - DB_PORT=3306
+  #     - DB_NAME=conjifs
+  #     - DB_HOST=mysql
+  #     - MYSQL_USER=marcos
+  #     - MYSQL_USER_PASSWORD=12345678
+  #   depends_on:
+  #     - mysql
+
+networks: 
+  postgres-network:
+    driver: bridge
