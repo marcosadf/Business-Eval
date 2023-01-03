@@ -42,7 +42,6 @@ public class User {
 	@Size(max = 60)
 	private String email;
 	
-	@JsonIgnore
 	@Size(max = 255)
 	private String loginCode;
 	
@@ -51,7 +50,7 @@ public class User {
 	
 	@Column(columnDefinition = "string default 'DEFAULT'")
 	@Enumerated(EnumType.STRING)
-	private Authority authority = Authority.DEFAULT;
+	private Authority authority;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "manager", cascade = CascadeType.REFRESH)

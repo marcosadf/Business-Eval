@@ -45,13 +45,13 @@ public class UserService {
 		if(user.getId() != null) {
 			Optional<User> researchedUser = userRepository.findById(user.getId());
 			if(researchedUser.isPresent()) {
-				if(researchedUser.get().getEmail() != user.getEmail()) {
+				if(!researchedUser.get().getEmail().equals(user.getEmail())) {
 					if(!userRepository.findByEmail(user.getEmail()).isEmpty()) {
 						throw new BusinessException(messageSource.getMessage("email.user.exist", null, LocaleContextHolder.getLocale()));
 					}
-					if(user.getAuthority() == Authority.ROOT && researchedUser.get().getAuthority() != Authority.ROOT) {
-						throw new BusinessException(messageSource.getMessage("not.permission.operation", null, LocaleContextHolder.getLocale()));
-					}
+				}
+				if(user.getAuthority() == Authority.ROOT && researchedUser.get().getAuthority() != Authority.ROOT) {
+					throw new BusinessException(messageSource.getMessage("not.permission.operation", null, LocaleContextHolder.getLocale()));
 				}
 			}
 			else {
@@ -72,8 +72,8 @@ public class UserService {
 	}
 
 	public User findByEmail(String email) {
-		List<User> users = userRepository.findByEmailContains(email);
-		if(userRepository.findByEmailContains(email).isEmpty()) {
+		List<User> users = userRepository.findByEmail(email);
+		if(userRepository.findByEmail(email).isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
 		}
 		return users.get(0);
@@ -93,6 +93,7 @@ public class UserService {
 		User user = new User();
 		if(users.isEmpty()) {
 			user.setEmail(email);
+			user.setAuthority(Authority.DEFAULT);
 			if(CODE_EXPIRATION == "true") {
 				Date expirantion = new Date(System.currentTimeMillis() + (CODE_TIME_EXPIRATION * 1000));
 				user.setExpirationCode(expirantion);
@@ -155,6 +156,14 @@ public class UserService {
 			return save(user);
 		}
 		throw new BusinessException(messageSource.getMessage("not.permission.operation", null, LocaleContextHolder.getLocale()));
+	}
+
+	public User findById(Long userId) {
+		Optional<User> user = userRepository.findById(userId);
+		if(user.isEmpty()) {
+			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
+		}
+		return user.get();
 	}
 	
 }

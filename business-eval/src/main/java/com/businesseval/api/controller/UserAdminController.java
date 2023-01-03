@@ -5,7 +5,6 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,11 +21,11 @@ import com.businesseval.domain.service.UserService;
 
 import lombok.AllArgsConstructor;
 
-@Secured({"ROOT"})
+
 @AllArgsConstructor
 @RestController
-@RequestMapping("/admin/user")
-public class UserRootController {
+@RequestMapping("/admin/users")
+public class UserAdminController {
 	private UserService userService;
 	private UserRepository userRepository;
 	
@@ -39,22 +38,22 @@ public class UserRootController {
 	public User edit(@PathVariable Long userId ,@Valid @RequestBody User user) {
 		return userService.edit(userId, user);
 	}
-	
+
 	@GetMapping("/name/contains")
 	public List<User> searchName(@RequestBody TextRequest userName){
 		return userRepository.findByNameContains(userName.getText());
 	}
-	
+
 	@GetMapping("/email")
 	public User findByEmail(@RequestBody TextRequest userEmail){
 		return userService.findByEmail(userEmail.getText());
 	}
-	
+
 	@GetMapping("/email/contains")
 	public List<User> searchEmail(@RequestBody TextRequest userEmail){
 		return userRepository.findByEmailContains(userEmail.getText());
 	}
-	
+
 	@GetMapping
 	public List<User> listAll(){
 		return userRepository.findAll();
@@ -65,7 +64,7 @@ public class UserRootController {
 		return userService.editAuthority(userId, authority);
 	}
 	
-	@DeleteMapping("/remove/{userId}")
+	@DeleteMapping("/{userId}")
 	public ResponseEntity<Void> delete(@PathVariable Long userId){
 		return userService.delete(userId);
 	}

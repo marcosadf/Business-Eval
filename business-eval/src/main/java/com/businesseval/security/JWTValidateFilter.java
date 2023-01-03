@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.businesseval.common.ExtractUserJWT;
 import com.businesseval.config.LocaleConfig;
 import com.businesseval.domain.model.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -28,12 +29,12 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
 public class JWTValidateFilter extends BasicAuthenticationFilter{
-	@Value("${app.token.attribute}")
-	private static String TOKEN_ATTRIBUTE;
-	@Value("${app.token.prefix}")
-	private static String TOKEN_PREFIX;
-	@Value("${app.token.secret}")
-	private static String TOKEN_SECRET;
+	@Value("${token.attribute}")
+	private static final String TOKEN_ATTRIBUTE = "Authorization";
+	@Value("${token.prefix}")
+	private static final String TOKEN_PREFIX = "Bearer";
+	@Value("${token.secret}")
+	private static final String TOKEN_SECRET = "525da2b8-7ccb-485c-b591-01e70ad55574";
 	private static MessageSource messageSource = new LocaleConfig().messageSource();
 	
 	public JWTValidateFilter(AuthenticationManager authenticationManager) {
@@ -64,7 +65,7 @@ public class JWTValidateFilter extends BasicAuthenticationFilter{
 		}
 	}
 	
-	public boolean validateToken(String token,HttpServletResponse response, HttpServletRequest request){
+	public boolean validateToken(String token,HttpServletResponse response, HttpServletRequest request) throws JsonProcessingException, IOException{
 	    	 Jws<Claims> jwt = Jwts.parser()
 					.setSigningKey(TOKEN_SECRET)
 					.parseClaimsJws(token);
@@ -80,8 +81,22 @@ public class JWTValidateFilter extends BasicAuthenticationFilter{
 				}
 	    		return false;
 	    	}
+	    	try {
+	    		ExtractUserJWT.extract(token);
+	    	}catch (Exception e) {
+	    		response.setStatus(403);
+	    		response.setHeader("Content-Type", "application/json");
+	    		response.getOutputStream().print(ow.writeValueAsString(new UserNotFoundResponse()));
+				return false;
+			}
 	    	return true;
 	}
+	public static class UserNotFoundResponse{
+		public int status = 400;
+		public String dateTime = LocalDateTime.now().toString();         
+		public String title = messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale());
+	}
+	
 	public static class ExpiredTokenResponse{
 		public int status = 403;
 		public String dateTime = LocalDateTime.now().toString();         

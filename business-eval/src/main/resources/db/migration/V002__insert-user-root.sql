@@ -1,0 +1,1 @@
+INSERT INTO manager (name, email, authority) VALUES ('Marcos', 'marcos.filho18@gmail.com', 'ROOT');

@@ -4,8 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +19,9 @@ import com.businesseval.domain.service.UserService;
 
 import lombok.AllArgsConstructor;
 
-@Secured({"DEFAULT"})
 @AllArgsConstructor
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 	private UserService userService;
 
@@ -34,6 +33,11 @@ public class UserController {
 	@DeleteMapping("/")
 	public ResponseEntity<Void> deleteForLogin(@RequestBody @Valid User user) {
 		return userService.deleteForLogin(user);
+	}
+	
+	@GetMapping
+	public User searchSelf(@RequestHeader HttpHeaders headers) {
+		return ExtractUserJWT.extract(headers);
 	}
 
 }

@@ -1,7 +1,6 @@
 package com.businesseval.security;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +18,7 @@ public class UserDetailsDate implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new HashSet<>();
+		return user.orElse(new User()).getAuthorities();
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package com.businesseval.security;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.servlet.FilterChain;
@@ -12,9 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.businesseval.domain.model.User;
+import com.businesseval.domain.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
@@ -33,8 +36,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Value("${app.token.time.expiration}")
 	private static final long TOKEN_TIME_EXPIRACTION = 86_400_000;
 	
-	JWTAuthenticationFilter(AuthenticationManager authenticationManager){
+	private UserService userService;
+		
+	JWTAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService){
 		this.authenticationManager = authenticationManager;
+		this.userService = userService;
 	}
 	
 	@Override
@@ -43,10 +49,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		try {
 			User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
+			Collection<? extends GrantedAuthority> authorities = userService.findByEmail(user.getEmail()).getAuthorities();
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				user.getEmail(),
 				user.getLoginCode(),
-				user.getAuthorities()
+				authorities
 			));
 		} catch (IOException e) {
 			throw new RuntimeException("Falha ao autenticar usuario", e);
@@ -56,7 +63,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request,HttpServletResponse response,
 			FilterChain chain, Authentication authResult) throws IOException, ServletException {
-		System.out.println("Erro");
 		UserDetailsDate user = (UserDetailsDate) authResult.getPrincipal();
 		String jwt = Jwts.builder()
 				.setSubject(user.getUsername())
@@ -77,18 +83,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.getWriter().flush();
 	}
 
-//	@Override
-//	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-//			throws IOException, ServletException {
-////		Estabelece a autenticação do usuário
-//		Authentication authentication = new JWTAuthenticationF().getAuthentication((HttpServletRequest)request, (HttpServletResponse)response);
-//		
-////		Transfere o processo para o Spring Security
-//		SecurityContextHolder.getContext().setAuthentication(authentication);
-//		
-//		chain.doFilter(request, response);
-//	}
-//	
+
 //	Cria cabeçalho de acesso do CORS
 	private void openingAccessCors(HttpServletResponse response) {
 		if (response.getHeader("Access-Control-Allow-Origin") == null) {

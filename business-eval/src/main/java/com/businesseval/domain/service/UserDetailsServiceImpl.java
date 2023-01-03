@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.businesseval.domain.model.User;
-import com.businesseval.domain.model.UserDetailsDate;
+import com.businesseval.security.UserDetailsDate;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
