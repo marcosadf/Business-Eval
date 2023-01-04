@@ -1,14 +1,11 @@
 package com.businesseval.domain.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
@@ -22,24 +19,24 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-public class BusinessUser {
+public class Answer {
 	@Id
 	@EqualsAndHashCode.Include
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Valid
-	@ConvertGroup(from = Default.class, to = ValidationGroups.BusinessId.class)
+	@ConvertGroup(from = Default.class, to = ValidationGroups.BusinessUserId.class)
 	@ManyToOne
 	@NotNull
-	private Business business;
+	private BusinessUser businessUser;
 	
 	@Valid
-	@ConvertGroup(from = Default.class, to = ValidationGroups.UserId.class)
+	@ConvertGroup(from = Default.class, to = ValidationGroups.QuestionId.class)
 	@ManyToOne
 	@NotNull
-	private User user;
+	private Question question;
 	
-	@OneToMany(mappedBy = "businessUser", cascade = CascadeType.REFRESH)
-	private List<Answer> answers;
+	@Column(columnDefinition = "integer default 0")
+	private Integer value;
 }

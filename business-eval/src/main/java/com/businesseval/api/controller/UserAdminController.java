@@ -46,7 +46,7 @@ public class UserAdminController {
 
 	@GetMapping("/email")
 	public User findByEmail(@RequestBody TextRequest userEmail){
-		return userService.findByEmail(userEmail.getText());
+		return userService.searchByEmail(userEmail.getText());
 	}
 
 	@GetMapping("/email/contains")

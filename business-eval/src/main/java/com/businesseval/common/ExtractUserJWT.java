@@ -30,7 +30,7 @@ public class ExtractUserJWT {
 				User user = ApplicationContextLoad
 						.getApplicationContext()
 						.getBean(UserService.class)
-						.findByEmail(username);
+						.searchByEmail(username);
 				return user;
 			}
 		}
@@ -51,7 +51,7 @@ public class ExtractUserJWT {
 				User user = ApplicationContextLoad
 						.getApplicationContext()
 						.getBean(UserService.class)
-						.findByEmail(username);
+						.searchByEmail(username);
 				return user;
 			}
 		}

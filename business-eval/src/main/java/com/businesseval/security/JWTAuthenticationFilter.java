@@ -49,7 +49,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		
 		try {
 			User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
-			Collection<? extends GrantedAuthority> authorities = userService.findByEmail(user.getEmail()).getAuthorities();
+			Collection<? extends GrantedAuthority> authorities = userService.searchByEmail(user.getEmail()).getAuthorities();
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 				user.getEmail(),
 				user.getLoginCode(),

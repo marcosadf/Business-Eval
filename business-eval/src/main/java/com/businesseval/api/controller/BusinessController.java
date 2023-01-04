@@ -45,11 +45,6 @@ public class BusinessController {
 		return businessService.searchCreated(businessId, ExtractUserJWT.extract(headers));
 	}
 
-	@GetMapping("/name/contains")
-	public List<Business> searchNameContains(@RequestBody TextRequest businessName, @RequestHeader HttpHeaders headers){
-		return businessService.searchByNameContains(businessName.getText(), ExtractUserJWT.extract(headers));
-	}
-
 	@GetMapping("/cnpjcpf")
 	public Business searchCnpjCpf(@RequestBody TextRequest businessEmail, @RequestHeader HttpHeaders headers){
 		return businessService.searchCreatedByCnpjCpf(businessEmail.getText(), ExtractUserJWT.extract(headers));

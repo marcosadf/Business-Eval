@@ -23,49 +23,40 @@ public class BusinessService {
 	@Autowired
 	private BusinessRepository businessRepository;
 	private MessageSource messageSource = new LocaleConfig().messageSource();
-
 	
 	public Business save(Business business) {
 		if(business.getId() != null) {
 			Optional<Business> researchedBusiness = businessRepository.findById(business.getId());
 			if(researchedBusiness.isPresent()) {
-				if(researchedBusiness.get().getCnpjCpf() != business.getCnpjCpf()) {
+				if(!researchedBusiness.get().getCnpjCpf().equals(business.getCnpjCpf())) {
 					if(!businessRepository.findByCnpjCpf(business.getCnpjCpf()).isEmpty()) {
-						throw new BusinessException(messageSource.getMessage("email.user.exist", null, LocaleContextHolder.getLocale()));
+						throw new BusinessException(messageSource.getMessage("cnpjcpf.business.exist", null, LocaleContextHolder.getLocale()));
 					}
 				}
 			}
 			else {
-				throw new EntityNotFoundException(messageSource.getMessage("add.user.not.found", null, LocaleContextHolder.getLocale()));
+				throw new EntityNotFoundException(messageSource.getMessage("add.business.not.found", null, LocaleContextHolder.getLocale()));
 			}
 		}else if(!businessRepository.findByCnpjCpf(business.getCnpjCpf()).isEmpty()) {
-			throw new BusinessException(messageSource.getMessage("email.user.exist", null, LocaleContextHolder.getLocale()));
+			throw new BusinessException(messageSource.getMessage("cnpjcpf.business.exist", null, LocaleContextHolder.getLocale()));
 		}
 		return businessRepository.save(business);
 	}
 	
 	public Business edit(Long businessId, Business business) {
-		if(businessRepository.findById(businessId).isEmpty()) {
-			throw new EntityNotFoundException(messageSource.getMessage("business.not.found", null, LocaleContextHolder.getLocale()));
-		}
+		search(businessId);
 		business.setId(businessId);
 		return save(business);	
 	}
 	
-	public ResponseEntity<Void> delete(Long userId) {
-		if(businessRepository.findById(userId).isEmpty()) {
-			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
-		}
-		businessRepository.deleteById(userId);
+	public ResponseEntity<Void> delete(Long businessId) {
+		search(businessId);
+		businessRepository.deleteById(businessId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 	
 	
 	// ----------------------------------------User Root----------------------------------------
-	public List<Business> listAll(Long businessId) {
-		return businessRepository.findAll();
-	}
-	
 	public Business search(Long businessId) {
 		Optional<Business> business = businessRepository.findById(businessId);
 		if(business.isEmpty()) {
@@ -74,20 +65,12 @@ public class BusinessService {
 		return business.get();
 	}
 	
-	public Business searchByCnpjCpf(String businessCnpjCpf, User user) {
+	public Business searchByCnpjCpf(String businessCnpjCpf) {
 		List<Business> business = businessRepository.findByCnpjCpf(businessCnpjCpf);
 		if(business.isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("business.not.found", null, LocaleContextHolder.getLocale()));
 		}
 		return business.get(0);
-	}
-	
-	public List<Business> searchByNameContains(String name, User user) {
-		List<Business> business = businessRepository.findByNameContains(name);
-		if(business.isEmpty()) {
-			throw new EntityNotFoundException(messageSource.getMessage("business.not.found", null, LocaleContextHolder.getLocale()));
-		}
-		return business;
 	}
 	
 	// ----------------------------------------User Default----------------------------------------

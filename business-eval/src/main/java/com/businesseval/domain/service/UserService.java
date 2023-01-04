@@ -71,7 +71,15 @@ public class UserService {
 		return save(user);	
 	}
 
-	public User findByEmail(String email) {
+	public User search(Long userId) {
+		Optional<User> user = userRepository.findById(userId);
+		if(user.isEmpty()) {
+			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
+		}
+		return user.get();
+	}
+	
+	public User searchByEmail(String email) {
 		List<User> users = userRepository.findByEmail(email);
 		if(userRepository.findByEmail(email).isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
@@ -80,9 +88,7 @@ public class UserService {
 	}
 
 	public ResponseEntity<Void> delete(Long userId) {
-		if(userRepository.findById(userId).isEmpty()) {
-			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
-		}
+		search(userId);
 		userRepository.deleteById(userId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
@@ -115,7 +121,7 @@ public class UserService {
 	}
 	
 	public ResponseEntity<Boolean> compareCode(User user) {
-		User researchedUser = findByEmail(user.getEmail());
+		User researchedUser = searchByEmail(user.getEmail());
 		if(researchedUser.getLoginCode() == encoder.encode(user.getLoginCode())) {
 			if(CODE_EXPIRATION == "true") {
 				if(researchedUser.getExpirationCode().before(new Date(System.currentTimeMillis()))) {
@@ -128,7 +134,7 @@ public class UserService {
 	}
 
 	public ResponseEntity<Void> deleteForLogin(User user) {
-		User researchedUser = findByEmail(user.getEmail());
+		User researchedUser = searchByEmail(user.getEmail());
 		if(researchedUser.getLoginCode() != encoder.encode(user.getLoginCode())) {
 			throw new BusinessException(messageSource.getMessage("login.code.incorrect", null, LocaleContextHolder.getLocale()));
 		}
@@ -158,12 +164,4 @@ public class UserService {
 		throw new BusinessException(messageSource.getMessage("not.permission.operation", null, LocaleContextHolder.getLocale()));
 	}
 
-	public User findById(Long userId) {
-		Optional<User> user = userRepository.findById(userId);
-		if(user.isEmpty()) {
-			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
-		}
-		return user.get();
-	}
-	
 }

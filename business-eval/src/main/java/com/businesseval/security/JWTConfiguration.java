@@ -41,7 +41,7 @@ public class JWTConfiguration extends WebSecurityConfigurerAdapter implements Ht
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-//		Delabilitado apenas durante desenvolvimento, quando implementado desabilitar
+//		Delabilitado apenas durante desenvolvimento, quando implementado retirar
 		http.csrf().disable().authorizeHttpRequests()
 			.antMatchers("/login").permitAll()
 			.antMatchers("/").hasAuthority("DEFAULT")
