@@ -1,7 +1,6 @@
 package com.businesseval.api.assembler;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -20,7 +19,7 @@ public class ObjectAssembler {
 		return modelMapper.map(object, Object.class);
 	}
 
-	public List<Object> toCollectionOut(Set<Object> listObject) {
+	public List<Object> toCollectionOut(List<Object> listObject) {
 		return listObject.stream().map(this::toOut).collect(Collectors.toList());
 	}
 }

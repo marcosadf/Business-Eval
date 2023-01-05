@@ -31,6 +31,6 @@ public class Category {
 	@NotNull
 	private Long position;
 	
-	@OneToMany(mappedBy = "category", cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
 	private List<Question> questions;
 }

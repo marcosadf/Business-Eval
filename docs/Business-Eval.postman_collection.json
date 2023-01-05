@@ -1,0 +1,1944 @@
+{
+	"info": {
+		"_postman_id": "000fa6b2-0dab-42ae-bd7e-385d94851b15",
+		"name": "Business-Eval",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "User Admin",
+					"item": [
+						{
+							"name": "Users - Search",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzMwMDE4NDV9.DoH-wo7RyzJGsua1KJ_RYm5qVeYzG_XhfiQdP_rq_H1CIVfnDMvSn6dTXSb6bQNCwTLTQq-Nt7o0JObgt1Z8_g",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/users/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Search Name Contains",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Marcos\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/name/contains",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"name",
+										"contains"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Search Email",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"marcos.filho18@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/email",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"email"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Search Email Contains",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"rcos\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/email/contains",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"email",
+										"contains"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - List All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Marco Antoni\",\r\n    \"email\": \"marcosfilho18@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Edit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5NDgzMjR9.iTv0jHicB-9aOR9mXqg9VpW0eEOx7GruOkAx53mG2GwLEyRvS60Bw9geluAjgJqeKCkbo5bGmT2Wm-psDE0zzQ",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Marcos Antonio\",\r\n    \"email\": \"marcosfilho18@gmail.com\",\r\n    \"authority\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Set Authority",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5NzQ4ODF9.hp5zTHbrniNhPVpx1hvq1TLsCqaYx-aNkb7MAh8nDFZNQcyigrYTpYJwZ1J_VRnEkQAFASalpatSNque-mhsbA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/setauthority/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"setauthority",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5NzQ4ODF9.hp5zTHbrniNhPVpx1hvq1TLsCqaYx-aNkb7MAh8nDFZNQcyigrYTpYJwZ1J_VRnEkQAFASalpatSNque-mhsbA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Marcos Antonio\",\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"loginCode\": \"$2a$10$TZEiRPyQKI3TVc.OLiDGY.f/NZ65kAErEnZblitdoU1bNuDt40Nhm\",\r\n    \"authority\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/users/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Businesses Admin",
+					"item": [
+						{
+							"name": "Businesses - Search",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/businesses/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businesses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Search Name Contains",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzIyMDUzMTd9.wVmZZ5KTd4maGjaARSG5WSSEXewafhZRIP9samm9jy52u15KO_PPXoeKAZJuzjoFJq_tR6avsuf6KcsZ6W9UDA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/businesses/name",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businesses",
+										"name"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Search CNPJ_CPF",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzIyMDUzMTd9.wVmZZ5KTd4maGjaARSG5WSSEXewafhZRIP9samm9jy52u15KO_PPXoeKAZJuzjoFJq_tR6avsuf6KcsZ6W9UDA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businesses/cnpjcpf",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses",
+										"cnpjcpf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - List All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/businesses",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businesses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Create",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzIyMDUzMTd9.wVmZZ5KTd4maGjaARSG5WSSEXewafhZRIP9samm9jy52u15KO_PPXoeKAZJuzjoFJq_tR6avsuf6KcsZ6W9UDA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Marcos Antonio\",\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"loginCode\": \"$2a$10$TZEiRPyQKI3TVc.OLiDGY.f/NZ65kAErEnZblitdoU1bNuDt40Nhm\",\r\n    \"authority\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/businesses",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businesses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Edit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzIyMDUzMTd9.wVmZZ5KTd4maGjaARSG5WSSEXewafhZRIP9samm9jy52u15KO_PPXoeKAZJuzjoFJq_tR6avsuf6KcsZ6W9UDA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Marcos Antonio\",\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"loginCode\": \"$2a$10$TZEiRPyQKI3TVc.OLiDGY.f/NZ65kAErEnZblitdoU1bNuDt40Nhm\",\r\n    \"authority\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/businesses/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businesses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzIyMDUzMTd9.wVmZZ5KTd4maGjaARSG5WSSEXewafhZRIP9samm9jy52u15KO_PPXoeKAZJuzjoFJq_tR6avsuf6KcsZ6W9UDA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Marcos Antonio\",\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"loginCode\": \"$2a$10$TZEiRPyQKI3TVc.OLiDGY.f/NZ65kAErEnZblitdoU1bNuDt40Nhm\",\r\n    \"authority\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/businesses/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businesses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "BusinessUser Admin",
+					"item": [
+						{
+							"name": "BusinessUsers - Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/admin/businessusers",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businessusers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BusinessUsers - Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/admin/businessusers/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businessusers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BusinessUsers - Search",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/businessusers/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"businessusers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Categories Admin",
+					"item": [
+						{
+							"name": "Categories - Save",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Aleat.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/categories",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Edit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Administrativo\",\r\n    \"position\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/categories/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Edit Position",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Administrativo\",\r\n    \"position\": 4\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/categories/position/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories",
+										"position",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/categories/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Search",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/categories/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - List All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5OTYyNjN9.-zF2zjQo-6Fc0a9kM-ySsEHezZ2jS7cSrseUgzK0CkLzP1rbdMVv9vzJrApQD4Ukulb8j-f_tAxSnLm4jHSURA",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/categories",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Search Name",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Administrativo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/categories/name",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories",
+										"name"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Search Name Contains",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Administra\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/categories/name/contains",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"categories",
+										"name",
+										"contains"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Questions Admin",
+					"item": [
+						{
+							"name": "Questions - Save",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Não sabemos, com certeza, cmo a  se saindo de fato.\",\r\n    \"categoryId\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/questions",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Edit",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Temos perfeita compreensão do nosso modelo de negócio.\",\r\n    \"position\": 1,\r\n    \"categoryId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/questions/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Edit Position",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"description\": \"Temos perfeita compreensão do nosso modelo de negócio.\",\r\n    \"position\": 7,\r\n    \"categoryId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/questions/position/3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"position",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/questions/3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Search",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/questions/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - List All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/admin/questions",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Search Description Contains",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI4OTExMDh9.M1P7dRp7wV1JDxns84YhAEmN9bgal4sl_4Rkln3fz7KxckfOK5EQzfO7MiKJx2BfJK04OMFCQJYxWMTZtgztgw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\": \"Não sabemos, com certeza, como a empresa está se saindo de fato.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/admin/questions/description/contains",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"description",
+										"contains"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login - Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"loginCode\": \"MHZTM1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login - Require Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzIyMDUzMTd9.wVmZZ5KTd4maGjaARSG5WSSEXewafhZRIP9samm9jy52u15KO_PPXoeKAZJuzjoFJq_tR6avsuf6KcsZ6W9UDA",
+								"type": "default"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "pt",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"marcosfilho18@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/requirelogin",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"requirelogin"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Defualt",
+			"item": [
+				{
+					"name": "Businesses",
+					"item": [
+						{
+							"name": "Businesses - Create Set Manager",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"JP Producoes\",\r\n    \"cnpjCpf\": \"100010010010\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/businesses",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Search Created",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businesses/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Search Created CNPJ_CPF",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"text\":\"100010010010\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/businesses/cnpjcpf",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses",
+										"cnpjcpf"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Edit Created",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"JP Producoes\",\r\n    \"cnpjCpf\": \"1000100100102\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/businesses/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - List Created",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businesses/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Businesses - Delete Created",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businesses/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businesses",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "BusinessUser",
+					"item": [
+						{
+							"name": "BusinessUsers - Save Self",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"businessId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/businessusers",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businessusers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BusinessesUser - Add User",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userEmail\": \"marcos.dourado@estudante.ifgoiano.edu.br\",\r\n    \"businessId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/businessusers/add",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businessusers",
+										"add"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BusinessUsers - Delete Created",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businessusers/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businessusers",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BusinessUsers - Search Created",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businessusers/3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businessusers",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "BusinessUsers - List  Self All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/businessusers",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"businessusers"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Answers",
+					"item": [
+						{
+							"name": "Answers - Save Self",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"questionId\": 1,\r\n    \"businessUserId\": 1,\r\n    \"value\": 8\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/answers",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"answers"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Answers - Edit Created Value",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"businessUserId\": 1,\r\n    \"questionId\": 1,\r\n    \"value\": 7\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/answers/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"answers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Answers - Delete Created",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/answers/2",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"answers",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Answers - Search Created",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/answers/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"answers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Categories",
+					"item": [
+						{
+							"name": "Categories - Search",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3MjkwNDYzMn0.CW1ETfn9WhJngJp4v7hrlEZrx7UI1KOQPU3e9S39Ea6R7US5_ig6H8aoRiTak3oo8KB279jF_gLgZ10-bznlOQ",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/categories/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"categories",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - List All",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3MjkwNDYzMn0.CW1ETfn9WhJngJp4v7hrlEZrx7UI1KOQPU3e9S39Ea6R7US5_ig6H8aoRiTak3oo8KB279jF_gLgZ10-bznlOQ",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/categories",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Search Name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/categories/name",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"categories",
+										"name"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Categories - Search Name Contains",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/categories/name/contains",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"categories",
+										"name",
+										"contains"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Questions",
+					"item": [
+						{
+							"name": "Questions - Search",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/admin/questions/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - List All",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/admin/questions",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Search Description",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/admin/questions/description",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"description"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Questions - Search Description Contains",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/admin/questions/description/contains",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"admin",
+										"questions",
+										"description",
+										"contains"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "Users - Search Self",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3NmaWxobzE4QGdtYWlsLmNvbSIsImV4cCI6MTY3Mjk3ODgwMH0.-PqCWaDlvSDXWpw0crdDDWo9XfDx9lOIhIh5WLn3N5ifwtRfLI4lc8MCZH8ZtlQ_m9VYOzxW1DFy9c1jCKm-Dw",
+										"type": "default"
+									}
+								],
+								"url": {
+									"raw": "localhost:8080/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Edit Self",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5NzQ4ODF9.hp5zTHbrniNhPVpx1hvq1TLsCqaYx-aNkb7MAh8nDFZNQcyigrYTpYJwZ1J_VRnEkQAFASalpatSNque-mhsbA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Marcos Antonio\",\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"authority\": \"ROOT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/users/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Users - Delete Self",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtYXJjb3MuZmlsaG8xOEBnbWFpbC5jb20iLCJleHAiOjE2NzI5NzQ4ODF9.hp5zTHbrniNhPVpx1hvq1TLsCqaYx-aNkb7MAh8nDFZNQcyigrYTpYJwZ1J_VRnEkQAFASalpatSNque-mhsbA",
+										"type": "default"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "pt",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"marcos.filho18@gmail.com\",\r\n    \"loginCode\": \"MHZTM1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/users",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.QuestionAssembler;
+import com.businesseval.api.modelin.QuestionIn;
 import com.businesseval.api.modelin.TextRequest;
-import com.businesseval.domain.model.Question;
+import com.businesseval.api.modelout.QuestionOut;
 import com.businesseval.domain.repository.QuestionRepository;
 import com.businesseval.domain.service.QuestionService;
 
@@ -27,35 +29,36 @@ import lombok.AllArgsConstructor;
 public class QuestionAdminController {
 	private QuestionService questionService;
 	private QuestionRepository questionRepository;
+	private QuestionAssembler questionAssembler;
 	
 	@PostMapping
-	public Question save(@Valid @RequestBody Question question) {
-		return questionService.save(question);
+	public QuestionOut save(@Valid @RequestBody QuestionIn question) {
+		return questionAssembler.toOut(questionService.save(questionAssembler.toIn(question)));
 	}
 	
 	@PutMapping("/{questionId}")
-	public Question edit(@PathVariable Long questionId ,@Valid @RequestBody Question question) {
-		return questionService.edit(questionId, question);
+	public QuestionOut edit(@PathVariable Long questionId ,@Valid @RequestBody QuestionIn question) {
+		return questionAssembler.toOut(questionService.edit(questionId, questionAssembler.toIn(question)));
 	}
 	
 	@PutMapping("/position/{questionId}")
-	public Question editPosition(@PathVariable Long questionId ,@Valid @RequestBody Question question) {
-		return questionService.editPosition(questionId, question);
+	public QuestionOut editPosition(@PathVariable Long questionId ,@Valid @RequestBody QuestionIn question) {
+		return questionAssembler.toOut(questionService.editPosition(questionId, questionAssembler.toIn(question)));
 	}
 	
 	@GetMapping("/{questionId}")
-	public Question search(@PathVariable Long questionId) {
-		return questionService.search(questionId);
+	public QuestionOut search(@PathVariable Long questionId) {
+		return questionAssembler.toOut(questionService.search(questionId));
 	}
 	
 	@GetMapping("/description/contains")
-	public List<Question> searchDescriptionContains(@RequestBody TextRequest questionDescription){
-		return questionRepository.findByDescriptionContains(questionDescription.getText());
+	public List<QuestionOut> searchDescriptionContains(@RequestBody TextRequest questionDescription){
+		return questionAssembler.toCollectionOut(questionRepository.findByDescriptionContains(questionDescription.getText()));
 	}
 
 	@GetMapping
-	public List<Question> listAll(){
-		return questionRepository.findAll();
+	public List<QuestionOut> listAll(){
+		return questionAssembler.toCollectionOut(questionRepository.findAll());
 	}
 	
 	@DeleteMapping("/{questionId}")

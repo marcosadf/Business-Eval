@@ -1,5 +1,6 @@
 package com.businesseval.domain.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class CategoryService {
 		if(category.getId() != null) {
 			Optional<Category> researchedCategory = categoryRepository.findById(category.getId());
 			if(researchedCategory.isPresent()) {
-				if(researchedCategory.get().getName().equals(category.getName())) {
+				if(!researchedCategory.get().getName().equals(category.getName())) {
 					if(!categoryRepository.findByName(category.getName()).isEmpty()) {
 						throw new BusinessException(messageSource.getMessage("name.category.exist", null, LocaleContextHolder.getLocale()));
 					}
@@ -47,7 +48,7 @@ public class CategoryService {
 	public Category edit(Long categoryId, Category category) {
 		Category researchedCategory = search(categoryId);
 		if(researchedCategory.getPosition() != category.getPosition()) {
-			throw new EntityNotFoundException(messageSource.getMessage("position.category.not.edit", null, LocaleContextHolder.getLocale()));
+			throw new BusinessException(messageSource.getMessage("position.category.not.edit", null, LocaleContextHolder.getLocale()));
 		}
 		category.setId(categoryId);
 		return save(category);	
@@ -79,7 +80,20 @@ public class CategoryService {
 	public ResponseEntity<Void> delete(Long categoryId) {
 		search(categoryId);
 		categoryRepository.deleteById(categoryId);
+		sortPosition();
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	}
+	
+	private void sortPosition() {
+		List<Category> categories = categoryRepository.findAll();
+		Collections.sort(categories,(q1, q2) -> {
+			return (int) (q1.getPosition() - q2.getPosition());
+		});
+		for (int i = 0; i < categories.size(); i++) {
+			Category c = categories.get(i);
+			c.setPosition((long) (i+1));
+			categoryRepository.save(c);
+		}
 	}
 	
 	public Category search(Long categoryId) {

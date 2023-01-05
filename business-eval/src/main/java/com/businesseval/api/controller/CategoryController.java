@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.CategoryAssembler;
 import com.businesseval.api.modelin.TextRequest;
-import com.businesseval.domain.model.Category;
+import com.businesseval.api.modelout.CategoryOut;
 import com.businesseval.domain.repository.CategoryRepository;
 import com.businesseval.domain.service.CategoryService;
 
@@ -21,25 +22,26 @@ import lombok.AllArgsConstructor;
 public class CategoryController {
 	private CategoryService categoryService;
 	private CategoryRepository categoryRepository;
+	private CategoryAssembler categoryAssembler;
 	
 	@GetMapping("/{categoryId}")
-	public Category search(@PathVariable Long categoryId) {
-		return categoryService.search(categoryId);
+	public CategoryOut search(@PathVariable Long categoryId) {
+		return categoryAssembler.toOut(categoryService.search(categoryId));
 	}
 
 	@GetMapping("/name")
-	public Category searchName(@RequestBody TextRequest categoryName){
-		return categoryService.searchByName(categoryName.getText());
+	public CategoryOut searchName(@RequestBody TextRequest categoryName){
+		return categoryAssembler.toOut(categoryService.searchByName(categoryName.getText()));
 	}
 	
 	@GetMapping("/name/contains")
-	public List<Category> searchNameContains(@RequestBody TextRequest categoryName){
-		return categoryRepository.findByNameContains(categoryName.getText());
+	public List<CategoryOut> searchNameContains(@RequestBody TextRequest categoryName){
+		return categoryAssembler.toCollectionOut(categoryRepository.findByNameContains(categoryName.getText()));
 	}
 
 	@GetMapping
-	public List<Category> listAll(){
-		return categoryRepository.findAll();
+	public List<CategoryOut> listAll(){
+		return categoryAssembler.toCollectionOut(categoryRepository.findAll());
 	}
 
 }

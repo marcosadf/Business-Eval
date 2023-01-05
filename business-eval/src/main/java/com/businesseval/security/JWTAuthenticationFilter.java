@@ -1,6 +1,7 @@
 package com.businesseval.security;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 
@@ -10,31 +11,36 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.businesseval.config.LocaleConfig;
 import com.businesseval.domain.model.User;
 import com.businesseval.domain.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm; 
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	private AuthenticationManager authenticationManager;
-	@Value("${token.attribute}")
+	@Value("${app.token.attribute}")
 	private static final String TOKEN_ATTRIBUTE = "Authorization";
-	@Value("${token.prefix}")
+	@Value("${app.token.prefix}")
 	private static final String TOKEN_PREFIX = "Bearer";
-	@Value("${token.secret}")
+	@Value("${app.token.secret}")
 	private static final String TOKEN_SECRET = "525da2b8-7ccb-485c-b591-01e70ad55574";
 	@Value("${app.token.expiration}")
 	private static final boolean TOKEN_EXPIRACTION = false;
 	@Value("${app.token.time.expiration}")
 	private static final long TOKEN_TIME_EXPIRACTION = 86_400_000;
+	private static MessageSource messageSource = new LocaleConfig().messageSource();
 	
 	private UserService userService;
 		
@@ -46,7 +52,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request,
 			HttpServletResponse response) {
-		
+		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		try {
 			User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 			Collection<? extends GrantedAuthority> authorities = userService.searchByEmail(user.getEmail()).getAuthorities();
@@ -55,11 +61,24 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 				user.getLoginCode(),
 				authorities
 			));
-		} catch (IOException e) {
-			throw new RuntimeException("Falha ao autenticar usuario", e);
+		}catch (Exception e) {
+    		response.setStatus(401);
+    		response.setHeader("Content-Type", "application/json");
+			try {
+				response.getOutputStream().print(ow.writeValueAsString(new AuthenticatinFaildResponse()));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
+		return null;
 	}
-
+	
+	public static class AuthenticatinFaildResponse{
+		public int status = 401;
+		public String dateTime = LocalDateTime.now().toString();         
+		public String title = messageSource.getMessage("authentication.failure", null, LocaleContextHolder.getLocale());
+	}
+	
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request,HttpServletResponse response,
 			FilterChain chain, Authentication authResult) throws IOException, ServletException {

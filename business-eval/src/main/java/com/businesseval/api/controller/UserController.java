@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.UserAssembler;
+import com.businesseval.api.modelout.UserOut;
 import com.businesseval.common.ExtractUserJWT;
 import com.businesseval.domain.model.User;
 import com.businesseval.domain.service.UserService;
@@ -24,20 +26,21 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/users")
 public class UserController {
 	private UserService userService;
+	private UserAssembler userAssembler;
 
 	@PutMapping("/{userId}")
-	public User edit(@PathVariable Long userId ,@Valid @RequestBody User user, @RequestHeader HttpHeaders headers) {
-		return userService.editSelf(userId, user, ExtractUserJWT.extract(headers));
+	public UserOut edit(@PathVariable Long userId ,@Valid @RequestBody User user, @RequestHeader HttpHeaders headers) {
+		return userAssembler.toOut(userService.editSelf(userId, user, ExtractUserJWT.extract(headers)));
 	}
 	
-	@DeleteMapping("/")
+	@DeleteMapping
 	public ResponseEntity<Void> deleteForLogin(@RequestBody @Valid User user) {
 		return userService.deleteForLogin(user);
 	}
 	
 	@GetMapping
-	public User searchSelf(@RequestHeader HttpHeaders headers) {
-		return ExtractUserJWT.extract(headers);
+	public UserOut searchSelf(@RequestHeader HttpHeaders headers) {
+		return userAssembler.toOut(ExtractUserJWT.extract(headers));
 	}
 
 }

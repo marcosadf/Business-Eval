@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.AnswerAssembler;
+import com.businesseval.api.modelin.AnswerIn;
+import com.businesseval.api.modelout.AnswerOut;
 import com.businesseval.common.ExtractUserJWT;
-import com.businesseval.domain.model.Answer;
 import com.businesseval.domain.service.AnswerService;
 
 import lombok.AllArgsConstructor;
@@ -25,20 +27,21 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/answers")
 public class AnswerController {
 	private AnswerService answerService;
+	private AnswerAssembler answerAssembler;
 	
 	@PostMapping
-	public Answer saveSelf(@Valid @PathVariable Answer answer, @RequestHeader HttpHeaders headers) {
-		return answerService.saveSelf(answer, ExtractUserJWT.extract(headers));
+	public AnswerOut saveSelf(@Valid @RequestBody AnswerIn answer, @RequestHeader HttpHeaders headers) {
+		return answerAssembler.toOut(answerService.saveSelf(answerAssembler.toIn(answer), ExtractUserJWT.extract(headers)));
 	}
 	
 	@GetMapping("/{answerId}")
-	public Answer searchCreated(@PathVariable Long answerId, @RequestHeader HttpHeaders headers) {
-		return answerService.searchCreated(answerId, ExtractUserJWT.extract(headers));
+	public AnswerOut searchCreated(@PathVariable Long answerId, @RequestHeader HttpHeaders headers) {
+		return answerAssembler.toOut(answerService.searchCreated(answerId, ExtractUserJWT.extract(headers)));
 	}
 	
 	@PutMapping("/{answerId}")
-	public Answer editCreatedValue(@PathVariable Long answerId ,@Valid @RequestBody Answer answer, @RequestHeader HttpHeaders headers) {
-		return answerService.editCreatedValue(answerId, answer, ExtractUserJWT.extract(headers));
+	public AnswerOut editCreatedValue(@PathVariable Long answerId ,@Valid @RequestBody AnswerIn answer, @RequestHeader HttpHeaders headers) {
+		return answerAssembler.toOut(answerService.editCreatedValue(answerId, answerAssembler.toIn(answer), ExtractUserJWT.extract(headers)));
 	}
 	
 	@DeleteMapping("/{answerId}")

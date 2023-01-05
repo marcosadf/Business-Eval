@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.businesseval.domain.model.BusinessUser;
+import com.businesseval.api.assembler.BusinessUserAssembler;
+import com.businesseval.api.modelin.BusinessUserIn;
+import com.businesseval.api.modelout.BusinessUserOut;
 import com.businesseval.domain.repository.BusinessUserRepository;
 import com.businesseval.domain.service.BusinessUserService;
 
@@ -21,24 +23,25 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/admin/businessUsers")
+@RequestMapping("/admin/businessusers")
 public class BusinessUserAdminController {
 	private BusinessUserService businessUserService;
 	private BusinessUserRepository businessUserRepository;
+	private BusinessUserAssembler businessUserAssembler;
 	
 	@PostMapping
-	public BusinessUser save(@Valid @RequestBody BusinessUser businessUser) {
-		return businessUserService.save(businessUser);
+	public BusinessUserOut save(@Valid @RequestBody BusinessUserIn businessUser) {
+		return businessUserAssembler.toOut(businessUserService.save(businessUserAssembler.toIn(businessUser)));
 	}
 	
 	@GetMapping("/{businessUserId}")
-	public BusinessUser search(@PathVariable Long businessUserId) {
-		return businessUserService.search(businessUserId);
+	public BusinessUserOut search(@PathVariable Long businessUserId) {
+		return businessUserAssembler.toOut(businessUserService.search(businessUserId));
 	}
 
 	@GetMapping
-	public List<BusinessUser> listAll(){
-		return businessUserRepository.findAll();
+	public List<BusinessUserOut> listAll(){
+		return businessUserAssembler.toCollectionOut(businessUserRepository.findAll());
 	}
 	
 	@DeleteMapping("/{businessUserId}")

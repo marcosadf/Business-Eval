@@ -28,7 +28,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-@Table(name = "manager")
+@Table(name = "sys_user")
 public class User {
 	@Id
 	@EqualsAndHashCode.Include
@@ -48,15 +48,13 @@ public class User {
 	@JsonIgnore
 	private Date expirationCode;
 	
-	@Column(columnDefinition = "string default 'DEFAULT'")
 	@Enumerated(EnumType.STRING)
+	@Column(columnDefinition = "String default 'DEFAULT'")
 	private Authority authority;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "manager", cascade = CascadeType.REFRESH)
 	private List<Business> businesses; 
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<BusinessUser> BusinessUsers;
 	
@@ -65,11 +63,8 @@ public class User {
 		if(authority == Authority.DEFAULT) {
 			return List.of(new SimpleGrantedAuthority("DEFAULT"));
 		}
-		else if(authority == Authority.MANAGER) {
-			return List.of(new SimpleGrantedAuthority("DEFAULT"), new SimpleGrantedAuthority("MANAGER"));
-		}
 		else if(authority == Authority.ROOT) {
-			return List.of(new SimpleGrantedAuthority("DEFAULT"), new SimpleGrantedAuthority("MANAGER"), new SimpleGrantedAuthority("ROOT"));
+			return List.of(new SimpleGrantedAuthority("DEFAULT"), new SimpleGrantedAuthority("ROOT"));
 		}
 		return null;
 	}

@@ -5,11 +5,10 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class UserOut {
+public class BusinessOut {
 	private Long id;
 	private String name;
-	private String email;
-	private String authority;
+	private String cnpjCpf;
+	private Long managerId;
 	private List<BusinessUserOut> businessUsers;
-	private List<BusinessOut> businesses;
 }

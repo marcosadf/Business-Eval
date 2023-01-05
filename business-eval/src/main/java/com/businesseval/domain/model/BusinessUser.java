@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
@@ -30,16 +32,18 @@ public class BusinessUser {
 	
 	@Valid
 	@ConvertGroup(from = Default.class, to = ValidationGroups.BusinessId.class)
-	@ManyToOne
+	@OneToOne
 	@NotNull
+	@JoinColumn(name = "business_id")
 	private Business business;
 	
 	@Valid
 	@ConvertGroup(from = Default.class, to = ValidationGroups.UserId.class)
 	@ManyToOne
 	@NotNull
+	@JoinColumn(name = "user_id")
 	private User user;
 	
-	@OneToMany(mappedBy = "businessUser", cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "businessUser", cascade = CascadeType.ALL)
 	private List<Answer> answers;
 }

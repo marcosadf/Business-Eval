@@ -3,6 +3,7 @@ package com.businesseval.domain.service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.businesseval.api.modelin.TextRequest;
 import com.businesseval.common.GenerateAlphaNumericString;
 import com.businesseval.config.LocaleConfig;
 import com.businesseval.domain.exception.BusinessException;
@@ -35,9 +35,9 @@ public class UserService {
 
 	private MessageSource messageSource = new LocaleConfig().messageSource();
 	
-	@Value("${code.expiration}")
+	@Value("${app.code.expiration}")
 	private static String CODE_EXPIRATION;
-	@Value("${code.time.expiration}")
+	@Value("${app.code.time.expiration}")
 	private static Integer CODE_TIME_EXPIRATION;
 	
 	
@@ -59,6 +59,9 @@ public class UserService {
 			}
 		}else if(!userRepository.findByEmail(user.getEmail()).isEmpty()) {
 			throw new BusinessException(messageSource.getMessage("email.user.exist", null, LocaleContextHolder.getLocale()));
+		}
+		if(user.getAuthority() == null) {
+			user.setAuthority(Authority.DEFAULT);
 		}
 		return userRepository.save(user);
 	}
@@ -88,12 +91,18 @@ public class UserService {
 	}
 
 	public ResponseEntity<Void> delete(Long userId) {
-		search(userId);
+		User user = search(userId);
+		List<User> usersRoot = userRepository.findAll().stream().filter(u -> u.getAuthority() == Authority.ROOT).collect(Collectors.toList());
+		if(usersRoot.size() == 1) {
+			if(usersRoot.get(0).equals(user)) {
+				throw new BusinessException(messageSource.getMessage("invalid.operation.last.user.root", null, LocaleContextHolder.getLocale()));
+			}
+		}
 		userRepository.deleteById(userId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
-	public User requireLoginCode(String email) {
+	public User requireLoginCode(String email, String customTitle, String customMessage) {
 		List<User> users = userRepository.findByEmail(email);
 		String loginCode = GenerateAlphaNumericString.getRandomString(6);
 		User user = new User();
@@ -106,7 +115,41 @@ public class UserService {
 			}
 			String encodeLoginCode = encoder.encode(loginCode);
 			user.setLoginCode(encodeLoginCode);
-			mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+			
+			if(customTitle != null) {
+				if(!customTitle.equals("")) {
+					if(customMessage != null) {
+						if(!customMessage.equals("")) {	
+							mailService.sendMail(email, customTitle, customMessage + ": " + loginCode);
+						}else {
+							mailService.sendMail(email, customTitle, messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+						}
+					}else {
+						mailService.sendMail(email, customTitle, messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+					}
+				}else {
+					if(customMessage != null) {
+						if(!customMessage.equals("")) {	
+							mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), customMessage + ": " + loginCode);
+						}else {
+							mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+						}
+					}else {
+						mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+					}
+				}
+			}else {
+				if(customMessage != null) {
+					if(!customMessage.equals("")) {	
+						mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), customMessage + ": " + loginCode);
+					}else {
+						mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+					}
+				}else {
+					mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+				}
+			}
+			
 		}else{
 			user = users.get(0);
 			if(CODE_EXPIRATION == "true") {
@@ -120,37 +163,49 @@ public class UserService {
 		return save(user);
 	}
 	
-	public ResponseEntity<Boolean> compareCode(User user) {
+	public Boolean compareCode(User user) {
 		User researchedUser = searchByEmail(user.getEmail());
-		if(researchedUser.getLoginCode() == encoder.encode(user.getLoginCode())) {
+		if(encoder.matches(user.getLoginCode(), researchedUser.getLoginCode())) {
 			if(CODE_EXPIRATION == "true") {
 				if(researchedUser.getExpirationCode().before(new Date(System.currentTimeMillis()))) {
 					throw new ExpirationCodeException(messageSource.getMessage("login.code.expiraded", null, LocaleContextHolder.getLocale()));
 				}
 			}
-			return ResponseEntity.ok(true);
+			return true;
 		}
-		return ResponseEntity.ok(false);
+		return false;
 	}
 
 	public ResponseEntity<Void> deleteForLogin(User user) {
 		User researchedUser = searchByEmail(user.getEmail());
-		if(researchedUser.getLoginCode() != encoder.encode(user.getLoginCode())) {
+		if(!compareCode(user)) {
 			throw new BusinessException(messageSource.getMessage("login.code.incorrect", null, LocaleContextHolder.getLocale()));
 		}
-		userRepository.delete(researchedUser);
+		delete(researchedUser.getId());
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
-	public User editAuthority(Long userId, TextRequest authority) {
+	public User editAuthority(Long userId, String authority) {
 		Optional<User> researchedUser = userRepository.findById(userId);
 		if(researchedUser.isPresent()) {
 			User user = researchedUser.get();
-			user.setAuthority(Authority.valueOf(authority.getText()));
+			Authority authorityEnum;
+			try {
+				authorityEnum = Authority.valueOf(authority);
+			}catch (Exception e) {
+				throw new BusinessException(messageSource.getMessage("user.invalid.authority", null, LocaleContextHolder.getLocale()));
+			}
+			List<User> usersRoot = userRepository.findAll().stream().filter(u -> u.getAuthority() == Authority.ROOT).collect(Collectors.toList());
+			if(usersRoot.size() == 1) {
+				if(usersRoot.get(0).equals(user) && authorityEnum != Authority.ROOT) {
+					throw new BusinessException(messageSource.getMessage("invalid.operation.last.user.root", null, LocaleContextHolder.getLocale()));
+				}
+			}
+			user.setAuthority(authorityEnum);
+			return save(user);
 		}else {
 			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
 		}
-		return null;
 	}
 
 	public User editSelf(Long userId, User user, User userRequest) {

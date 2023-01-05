@@ -1,6 +1,8 @@
 package com.businesseval.domain.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -25,11 +27,18 @@ public class AnswerService {
 	private MessageSource messageSource = new LocaleConfig().messageSource();
 	
 	public Answer save(Answer answer) {
-		if(answer.getId() != null || businessUserService.search(answer.getBusinessUser().getId())
-			.getAnswers().stream()
-			.anyMatch(a -> a.getQuestion().getId() == answer.getQuestion().getId())
-			) {
+		if(answer.getId() != null) {
 			throw new BusinessException(messageSource.getMessage("answer.exist", null, LocaleContextHolder.getLocale()));
+		}else {
+			List<Answer> answers = businessUserService.search(answer.getBusinessUser().getId()).getAnswers();
+			System.out.println(answers.size());
+			if (!answers.stream()
+					.filter(a -> a.getQuestion().getId() == answer.getQuestion().getId())
+					.collect(Collectors.toList())
+					.isEmpty()
+					) {
+				throw new BusinessException(messageSource.getMessage("answer.exist", null, LocaleContextHolder.getLocale()));
+			}
 		}
 		return answerRepository.save(answer);
 	}
@@ -56,7 +65,9 @@ public class AnswerService {
 	
 	// ----------------------------------------User Default----------------------------------------
 	public Answer saveSelf(Answer answer, User user) {
-		if(!user.getBusinessUsers().stream().anyMatch(b -> b.getId() == answer.getBusinessUser().getId())) {
+		if(user.getBusinessUsers().stream()
+				.filter(b -> b.getId() == answer.getBusinessUser().getId())
+				.collect(Collectors.toList()).isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("businessUser.not.found", null, LocaleContextHolder.getLocale()));
 		}
 		return save(answer);

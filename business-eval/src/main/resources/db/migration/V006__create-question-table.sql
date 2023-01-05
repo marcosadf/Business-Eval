@@ -1,5 +1,5 @@
 CREATE TABLE question (
-	id SERIAL CONSTRAINT pk_id_user PRIMARY KEY,
+	id SERIAL CONSTRAINT pk_id_question PRIMARY KEY,
 	description varchar(500),
 	position bigint,
 	category_id bigint NOT NULL,

@@ -10,11 +10,11 @@ import com.businesseval.domain.service.UserService;
 import io.jsonwebtoken.Jwts;
 
 public class ExtractUserJWT {
-	@Value("${token.attribute}")
+	@Value("${app.token.attribute}")
 	private static final String TOKEN_ATTRIBUTE = "Authorization";
-	@Value("${token.prefix}")
+	@Value("${app.token.prefix}")
 	private static final String TOKEN_PREFIX = "Bearer";
-	@Value("${token.secret}")
+	@Value("${app.token.secret}")
 	private static final String TOKEN_SECRET = "525da2b8-7ccb-485c-b591-01e70ad55574";
 	
 	public static User extract(String tokenRequest) {

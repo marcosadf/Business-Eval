@@ -101,7 +101,7 @@ public class BusinessService {
 		if(user.getBusinesses().isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("business.not.found", null, LocaleContextHolder.getLocale()));
 		}
-		List<Business> businesses = user.getBusinesses().stream().filter(b -> b.getCnpjCpf() == businessCnpjCpf).collect(Collectors.toList());
+		List<Business> businesses = user.getBusinesses().stream().filter(b -> b.getCnpjCpf().equals(businessCnpjCpf)).collect(Collectors.toList());
 		if(businesses.isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("business.not.found", null, LocaleContextHolder.getLocale()));
 		}
@@ -121,6 +121,7 @@ public class BusinessService {
 	
 	public Business editCreated(Long businessId, Business business, User user) {
 		Business businessResearched = searchCreated(businessId, user);
+		business.setManager(user);
 		return edit(businessResearched.getId(), business);
 	}
 	

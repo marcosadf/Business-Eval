@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -29,14 +30,16 @@ public class Answer {
 	@ConvertGroup(from = Default.class, to = ValidationGroups.BusinessUserId.class)
 	@ManyToOne
 	@NotNull
+	@JoinColumn(name = "business_user_id")
 	private BusinessUser businessUser;
 	
 	@Valid
 	@ConvertGroup(from = Default.class, to = ValidationGroups.QuestionId.class)
 	@ManyToOne
 	@NotNull
+	@JoinColumn(name = "question_id")
 	private Question question;
 	
-	@Column(columnDefinition = "integer default 0")
+	@Column(name = "value_answer",columnDefinition = "integer default 0")
 	private Integer value;
 }

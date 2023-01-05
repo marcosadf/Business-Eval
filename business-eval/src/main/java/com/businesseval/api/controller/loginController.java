@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.businesseval.api.assembler.UserAssembler;
+import com.businesseval.api.modelin.UserIn;
 import com.businesseval.api.modelout.UserOut;
-import com.businesseval.domain.model.User;
 import com.businesseval.domain.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -20,8 +20,7 @@ public class loginController {
 	private UserAssembler assembler;
 	
 	@PostMapping
-	public UserOut requireLogin(@RequestBody User user) {
-		return assembler.toOut(userService.requireLoginCode(user.getEmail()));
-	}
-	
+	public UserOut requireLogin(@RequestBody UserIn user) {
+		return assembler.toOut(userService.requireLoginCode(user.getEmail(), user.getCustomTitle(), user.getCustomMessage()));
+	}	
 }

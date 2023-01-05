@@ -1,5 +1,6 @@
 package com.businesseval.domain.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +21,15 @@ import com.businesseval.domain.repository.QuestionRepository;
 public class QuestionService {
 	@Autowired
 	private QuestionRepository questionRepository;
+	@Autowired
+	private CategoryService categoryService;
 	private MessageSource messageSource = new LocaleConfig().messageSource();
 	
 	public Question save(Question question) {
 		if(question.getId() != null) {
 			Optional<Question> researchedQuestion = questionRepository.findById(question.getId());
 			if(researchedQuestion.isPresent()) {
-				if(researchedQuestion.get().getDescription().equals(question.getDescription())) {
+				if(!researchedQuestion.get().getDescription().equals(question.getDescription())) {
 					if(!questionRepository.findByDescription(question.getDescription()).isEmpty()) {
 						throw new BusinessException(messageSource.getMessage("description.question.exist", null, LocaleContextHolder.getLocale()));
 					}
@@ -38,8 +41,8 @@ public class QuestionService {
 		}else if(!questionRepository.findByDescription(question.getDescription()).isEmpty()) {
 			throw new BusinessException(messageSource.getMessage("description.question.exist", null, LocaleContextHolder.getLocale()));
 		}else {
-			long numCategories = questionRepository.count();
-			question.setPosition(numCategories + 1);
+			long numQuestions = categoryService.search(question.getCategory().getId()).getQuestions().size();
+			question.setPosition(numQuestions + 1);
 		}
 		return questionRepository.save(question);
 	}
@@ -47,7 +50,7 @@ public class QuestionService {
 	public Question edit(Long questionId, Question question) {
 		Question researchedQuestion = search(questionId);
 		if(researchedQuestion.getPosition() != question.getPosition()) {
-			throw new EntityNotFoundException(messageSource.getMessage("position.question.not.edit", null, LocaleContextHolder.getLocale()));
+			throw new BusinessException(messageSource.getMessage("position.question.not.edit", null, LocaleContextHolder.getLocale()));
 		}
 		question.setId(questionId);
 		return save(question);	
@@ -55,19 +58,19 @@ public class QuestionService {
 	
 	public Question editPosition(Long questionId, Question question) {
 		Question researchedQuestion = search(questionId);
+		List<Question> questions = researchedQuestion.getCategory().getQuestions();
 		if(researchedQuestion.getPosition() != question.getPosition()) {
-			if(question.getPosition() > questionRepository.count() || question.getPosition() < 0) {
+			if(question.getPosition() > questions.size() || question.getPosition() < 0) {
 				throw new EntityNotFoundException(messageSource.getMessage("position.question.not.valid", null, LocaleContextHolder.getLocale()));
 			}
-			List<Question> categories = questionRepository.findAll();
-			categories.stream().forEach(c -> {
-				if(!c.equals(researchedQuestion)) {
-					if(c.getPosition() < researchedQuestion.getPosition() && c.getPosition() >= question.getPosition()) {
-						c.setPosition(c.getPosition() + 1);
-						questionRepository.save(c);
-					}else if(c.getPosition() > researchedQuestion.getPosition() && c.getPosition() <= question.getPosition()) {
-						c.setPosition(c.getPosition() - 1);
-						questionRepository.save(c);
+			questions.stream().forEach(q -> {
+				if(!q.equals(researchedQuestion)) {
+					if(q.getPosition() < researchedQuestion.getPosition() && q.getPosition() >= question.getPosition()) {
+						q.setPosition(q.getPosition() + 1);
+						questionRepository.save(q);
+					}else if(q.getPosition() > researchedQuestion.getPosition() && q.getPosition() <= question.getPosition()) {
+						q.setPosition(q.getPosition() - 1);
+						questionRepository.save(q);
 					}
 				}
 			});
@@ -77,9 +80,22 @@ public class QuestionService {
 	}
 	
 	public ResponseEntity<Void> delete(Long questionId) {
-		search(questionId);
+		Long categoryid = search(questionId).getCategory().getId();
 		questionRepository.deleteById(questionId);
+		sortPosition(categoryid);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	}
+	
+	private void sortPosition(Long categoryId) {
+		List<Question> questions = categoryService.search(categoryId).getQuestions();
+		Collections.sort(questions,(q1, q2) -> {
+			return (int) (q1.getPosition() - q2.getPosition());
+		});
+		for (int i = 0; i < questions.size(); i++) {
+			Question q = questions.get(i);
+			q.setPosition((long) (i+1));
+			questionRepository.save(q);
+		}
 	}
 	
 	public Question search(Long questionId) {

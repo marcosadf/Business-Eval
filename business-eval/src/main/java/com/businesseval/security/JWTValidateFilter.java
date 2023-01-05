@@ -24,16 +24,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 
 public class JWTValidateFilter extends BasicAuthenticationFilter{
-	@Value("${token.attribute}")
+	@Value("${app.token.attribute}")
 	private static final String TOKEN_ATTRIBUTE = "Authorization";
-	@Value("${token.prefix}")
+	@Value("${app.token.prefix}")
 	private static final String TOKEN_PREFIX = "Bearer";
-	@Value("${token.secret}")
+	@Value("${app.token.secret}")
 	private static final String TOKEN_SECRET = "525da2b8-7ccb-485c-b591-01e70ad55574";
 	private static MessageSource messageSource = new LocaleConfig().messageSource();
 	
@@ -66,21 +64,32 @@ public class JWTValidateFilter extends BasicAuthenticationFilter{
 	}
 	
 	public boolean validateToken(String token,HttpServletResponse response, HttpServletRequest request) throws JsonProcessingException, IOException{
-	    	 Jws<Claims> jwt = Jwts.parser()
-					.setSigningKey(TOKEN_SECRET)
-					.parseClaimsJws(token);
-					
 	    	ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-	    	if( jwt.getBody().getExpiration().before(new Date())) {
+	    	try {
+	    		if(Jwts.parser()
+						.setSigningKey(TOKEN_SECRET)
+						.parseClaimsJws(token)
+						.getBody().getExpiration().before(new Date())) {
+		    		response.setStatus(403);
+		    		response.setHeader("Content-Type", "application/json");
+		    		try {
+						response.getOutputStream().print(ow.writeValueAsString(new ExpiredTokenResponse()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+		    		return false;
+		    	}
+	    	}catch (Exception e) {
 	    		response.setStatus(403);
 	    		response.setHeader("Content-Type", "application/json");
 	    		try {
 					response.getOutputStream().print(ow.writeValueAsString(new ExpiredTokenResponse()));
-				} catch (IOException e) {
+				} catch (IOException e1) {
 					e.printStackTrace();
 				}
 	    		return false;
-	    	}
+			}
+	    	
 	    	try {
 	    		ExtractUserJWT.extract(token);
 	    	}catch (Exception e) {

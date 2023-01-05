@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.BusinessAssembler;
+import com.businesseval.api.modelin.BusinessIn;
 import com.businesseval.api.modelin.TextRequest;
+import com.businesseval.api.modelout.BusinessOut;
 import com.businesseval.common.ExtractUserJWT;
-import com.businesseval.domain.model.Business;
 import com.businesseval.domain.service.BusinessService;
 
 import lombok.AllArgsConstructor;
@@ -26,37 +28,38 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/businesss")
+@RequestMapping("/businesses")
 public class BusinessController {
 	private BusinessService businessService;
+	private BusinessAssembler businessAssembler;
 	
 	@PostMapping
-	public Business save(@Valid @RequestBody Business business , @RequestHeader HttpHeaders headers) {
-		return businessService.saveSetManager(business, ExtractUserJWT.extract(headers));
+	public BusinessOut saveSelf(@Valid @RequestBody BusinessIn business , @RequestHeader HttpHeaders headers) {
+		return businessAssembler.toOut(businessService.saveSetManager(businessAssembler.toIn(business), ExtractUserJWT.extract(headers)));
 	}
 	
 	@PutMapping("/{businessId}")
-	public Business edit(@PathVariable Long businessId ,@Valid @RequestBody Business business, @RequestHeader HttpHeaders headers) {
-		return businessService.editCreated(businessId, business, ExtractUserJWT.extract(headers));
+	public BusinessOut editCreated(@PathVariable Long businessId ,@Valid @RequestBody BusinessIn business, @RequestHeader HttpHeaders headers) {
+		return businessAssembler.toOut(businessService.editCreated(businessId, businessAssembler.toIn(business), ExtractUserJWT.extract(headers)));
 	}
 	
 	@GetMapping("/{businessId}")
-	public Business search(@PathVariable Long businessId, @RequestHeader HttpHeaders headers) {
-		return businessService.searchCreated(businessId, ExtractUserJWT.extract(headers));
+	public BusinessOut searchCreated(@PathVariable Long businessId, @RequestHeader HttpHeaders headers) {
+		return businessAssembler.toOut(businessService.searchCreated(businessId, ExtractUserJWT.extract(headers)));
 	}
 
 	@GetMapping("/cnpjcpf")
-	public Business searchCnpjCpf(@RequestBody TextRequest businessEmail, @RequestHeader HttpHeaders headers){
-		return businessService.searchCreatedByCnpjCpf(businessEmail.getText(), ExtractUserJWT.extract(headers));
+	public BusinessOut searchCreatedCnpjCpf(@RequestBody TextRequest businessEmail, @RequestHeader HttpHeaders headers){
+		return businessAssembler.toOut(businessService.searchCreatedByCnpjCpf(businessEmail.getText(), ExtractUserJWT.extract(headers)));
 	}
 
 	@GetMapping
-	public List<Business> listAll(@RequestHeader HttpHeaders headers){
-		return businessService.listCreated(ExtractUserJWT.extract(headers));
+	public List<BusinessOut> listSelfAll(@RequestHeader HttpHeaders headers){
+		return businessAssembler.toCollectionOut(businessService.listCreated(ExtractUserJWT.extract(headers)));
 	}
 	
 	@DeleteMapping("/{businessId}")
-	public ResponseEntity<Void> delete(@PathVariable Long businessId, @RequestHeader HttpHeaders headers){
+	public ResponseEntity<Void> deleteCreated(@PathVariable Long businessId, @RequestHeader HttpHeaders headers){
 		return businessService.deleteCreated(businessId, ExtractUserJWT.extract(headers));
 	}
 }

@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.UserAssembler;
 import com.businesseval.api.modelin.TextRequest;
-import com.businesseval.domain.model.User;
+import com.businesseval.api.modelin.UserIn;
+import com.businesseval.api.modelout.UserOut;
 import com.businesseval.domain.repository.UserRepository;
 import com.businesseval.domain.service.UserService;
 
@@ -28,40 +30,46 @@ import lombok.AllArgsConstructor;
 public class UserAdminController {
 	private UserService userService;
 	private UserRepository userRepository;
+	private UserAssembler userAssembler;
 	
 	@PostMapping
-	public User save(@Valid @RequestBody User user) {
-		return userService.save(user);
+	public UserOut save(@Valid @RequestBody UserIn user) {
+		return userAssembler.toOut(userService.save(userAssembler.toIn(user)));
 	}
 	
 	@PutMapping("/{userId}")
-	public User edit(@PathVariable Long userId ,@Valid @RequestBody User user) {
-		return userService.edit(userId, user);
+	public UserOut edit(@PathVariable Long userId ,@Valid @RequestBody UserIn user) {
+		return userAssembler.toOut(userService.edit(userId, userAssembler.toIn(user)));
+	}
+	
+	@GetMapping("/{userId}")
+	public UserOut search(@PathVariable Long userId) {
+		return userAssembler.toOut(userService.search(userId));
 	}
 
 	@GetMapping("/name/contains")
-	public List<User> searchName(@RequestBody TextRequest userName){
-		return userRepository.findByNameContains(userName.getText());
+	public List<UserOut> searchNameContains(@RequestBody TextRequest userName){
+		return userAssembler.toCollectionOut(userRepository.findByNameContains(userName.getText()));
 	}
 
 	@GetMapping("/email")
-	public User findByEmail(@RequestBody TextRequest userEmail){
-		return userService.searchByEmail(userEmail.getText());
+	public UserOut searchByEmail(@RequestBody TextRequest userEmail){
+		return userAssembler.toOut(userService.searchByEmail(userEmail.getText()));
 	}
 
 	@GetMapping("/email/contains")
-	public List<User> searchEmail(@RequestBody TextRequest userEmail){
-		return userRepository.findByEmailContains(userEmail.getText());
+	public List<UserOut> searchEmailContains(@RequestBody TextRequest userEmail){
+		return userAssembler.toCollectionOut(userRepository.findByEmailContains(userEmail.getText()));
 	}
 
 	@GetMapping
-	public List<User> listAll(){
-		return userRepository.findAll();
+	public List<UserOut> listAll(){
+		return userAssembler.toCollectionOut(userRepository.findAll());
 	}
 	
-	@PutMapping("/setAuthority/{userId}")
-	public User editAuthority(@PathVariable Long userId ,@Valid @RequestBody TextRequest authority) {
-		return userService.editAuthority(userId, authority);
+	@PutMapping("/setauthority/{userId}")
+	public UserOut editAuthority(@PathVariable Long userId ,@Valid @RequestBody TextRequest authority) {
+		return userAssembler.toOut(userService.editAuthority(userId, authority.getText()));
 	}
 	
 	@DeleteMapping("/{userId}")

@@ -3,5 +3,5 @@ CREATE TABLE business (
 	name varchar(130), 
 	cnpj_cpf varchar(18) NOT NULL UNIQUE,
 	manager_id bigint NOT NULL,
-	FOREIGN KEY (manager_id) REFERENCES manager (id)
+	FOREIGN KEY (manager_id) REFERENCES sys_user (id)
 );

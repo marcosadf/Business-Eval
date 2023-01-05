@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.businesseval.api.assembler.BusinessAssembler;
+import com.businesseval.api.modelin.BusinessIn;
 import com.businesseval.api.modelin.TextRequest;
-import com.businesseval.domain.model.Business;
+import com.businesseval.api.modelout.BusinessOut;
 import com.businesseval.domain.repository.BusinessRepository;
 import com.businesseval.domain.service.BusinessService;
 
@@ -24,39 +26,40 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/admin/businesss")
+@RequestMapping("/admin/businesses")
 public class BusinessAdminController {
 	private BusinessService businessService;
 	private BusinessRepository businessRepository;
+	private BusinessAssembler businessAssembler;
 	
 	@PostMapping
-	public Business save(@Valid @RequestBody Business business) {
-		return businessService.save(business);
+	public BusinessOut save(@Valid @RequestBody BusinessIn business) {
+		return businessAssembler.toOut(businessService.save(businessAssembler.toIn(business)));
 	}
 	
 	@PutMapping("/{businessId}")
-	public Business edit(@PathVariable Long businessId ,@Valid @RequestBody Business business) {
-		return businessService.edit(businessId, business);
+	public BusinessOut edit(@PathVariable Long businessId ,@Valid @RequestBody BusinessIn business) {
+		return businessAssembler.toOut(businessService.edit(businessId, businessAssembler.toIn(business)));
 	}
 	
 	@GetMapping("/{businessId}")
-	public Business search(@PathVariable Long businessId) {
-		return businessService.search(businessId);
+	public BusinessOut search(@PathVariable Long businessId) {
+		return businessAssembler.toOut(businessService.search(businessId));
 	}
 
 	@GetMapping("/name/contains")
-	public List<Business> searchNameContains(@RequestBody TextRequest businessName){
-		return businessRepository.findByNameContains(businessName.getText());
+	public List<BusinessOut> searchNameContains(@RequestBody TextRequest businessName){
+		return businessAssembler.toCollectionOut(businessRepository.findByNameContains(businessName.getText()));
 	}
 
 	@GetMapping("/cnpjcpf")
-	public List<Business> searchCnpjCpf(@RequestBody TextRequest businessEmail){
-		return businessRepository.findByCnpjCpf(businessEmail.getText());
+	public BusinessOut searchCnpjCpf(@RequestBody TextRequest businessEmail){
+		return businessAssembler.toOut(businessService.searchByCnpjCpf(businessEmail.getText()));
 	}
 
 	@GetMapping
-	public List<Business> listAll(){
-		return businessRepository.findAll();
+	public List<BusinessOut> listAll(){
+		return businessAssembler.toCollectionOut(businessRepository.findAll());
 	}
 	
 	@DeleteMapping("/{businessId}")
