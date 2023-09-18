@@ -38,6 +38,9 @@ public class Question {
 	@NotNull
 	private Long position;
 	
+	@NotNull
+	private Boolean positive;
+	
 	@Valid
 	@ConvertGroup(from = Default.class, to = ValidationGroups.QuestionId.class)
 	@ManyToOne

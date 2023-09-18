@@ -15,4 +15,6 @@ public class BusinessIn {
 	@Size(max = 18)
 	@NotBlank
 	private String cnpjCpf;
+
+	private Long managerId = null;
 }

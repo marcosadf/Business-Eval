@@ -13,7 +13,10 @@ public class QuestionIn {
 	@Size(max = 500)
 	@NotBlank
 	private String description;
+	
 	private Long position;
+	
+	private Boolean positive;
 	
 	@NotNull
 	private Long categoryId;
