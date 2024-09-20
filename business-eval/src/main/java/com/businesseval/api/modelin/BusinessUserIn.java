@@ -16,4 +16,5 @@ public class BusinessUserIn {
 	private String customTitle;
 	
 	private String customMessage;
+
 }

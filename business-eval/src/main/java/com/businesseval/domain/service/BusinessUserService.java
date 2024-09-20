@@ -18,6 +18,7 @@ import com.businesseval.domain.model.Business;
 import com.businesseval.domain.model.BusinessUser;
 import com.businesseval.domain.model.User;
 import com.businesseval.domain.repository.BusinessUserRepository;
+import com.businesseval.domain.repository.UserRepository;
 
 @Service
 public class BusinessUserService {
@@ -27,7 +28,13 @@ public class BusinessUserService {
 	private BusinessService businessService;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserRepository userRepository;
+	
 	private MessageSource messageSource = new LocaleConfig().messageSource();
+	
+	@Autowired
+	private MailService mailService;
 	
 	public BusinessUser save(BusinessUser businessUser) {
 		if(businessUser.getId() != null) {
@@ -64,14 +71,19 @@ public class BusinessUserService {
 	}
 	
 	public BusinessUser addUser(BusinessUserIn businessUserIn, User user) {
+		businessService.search(businessUserIn.getBusinessId()).getBusinessUsers().forEach(b -> {
+			if(b.getUser().getEmail().equals(businessUserIn.getUserEmail())) {
+				throw new BusinessException(messageSource.getMessage("businessUser.exist", null, LocaleContextHolder.getLocale()));
+			}			
+		});
 		BusinessUser businessUser = new BusinessUser();
-		businessUser.setUser(
-						userService.requireLoginCode(
-							businessUserIn.getUserEmail(),
-							businessUserIn.getCustomTitle(),
-							businessUserIn.getCustomMessage()
-						)
-					);
+		Optional<User> userSearch = userRepository.findByEmail(businessUserIn.getUserEmail());
+		if(userSearch.isEmpty()) {
+			User userAdd = new User();
+			userAdd.setEmail(businessUserIn.getUserEmail());
+			businessUser.setUser(userService.save(userAdd));
+		}else
+			businessUser.setUser(userSearch.get());
 		businessUser.setBusiness(businessService.searchCreated(businessUserIn.getBusinessId(), user));	
 		return save(businessUser);
 	}
@@ -88,6 +100,38 @@ public class BusinessUserService {
 		searchCreated(businessUserId, user);
 		businessUserRepository.deleteById(businessUserId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+	}
+
+
+	public BusinessUser acceptedSelf(Long businessUserId, User extract) {
+		BusinessUser businessUser = search(businessUserId);
+		if(!businessUser.getInvitationAccepted()) {
+			businessUser.setInvitationAccepted(true);
+			return businessUserRepository.save(businessUser);
+		}
+		return businessUser;
+	}
+
+
+	public ResponseEntity<Void> inviteUser(BusinessUserIn businessUserIn) {
+//		(
+		String email = businessUserIn.getUserEmail();
+		String customTitle = businessUserIn.getCustomTitle();
+		String customMessage = businessUserIn.getCustomMessage();
+		
+		userService.searchByEmail(email);
+		
+		if(customTitle != null) {
+			if(!customTitle.equals("")) {
+				if(customMessage != null) {
+					if(!customMessage.equals("")) {	
+						mailService.sendMail(email, customTitle, customMessage);
+						return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
+					}
+				}
+			}
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 	}
 	
 }

@@ -21,12 +21,21 @@ import com.businesseval.domain.exception.EntityNotFoundException;
 import com.businesseval.domain.exception.ExpirationCodeException;
 import com.businesseval.domain.model.Authority;
 import com.businesseval.domain.model.User;
+import com.businesseval.domain.repository.BusinessRepository;
+import com.businesseval.domain.repository.BusinessUserRepository;
 import com.businesseval.domain.repository.UserRepository;
 
 @Service
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private BusinessRepository businessRepository;
+	
+	@Autowired
+	private BusinessUserRepository businessUserRepository;
+	
 	@Autowired
 	private PasswordEncoder encoder;
 	
@@ -35,11 +44,10 @@ public class UserService {
 
 	private MessageSource messageSource = new LocaleConfig().messageSource();
 	
-	@Value("${app.code.expiration}")
-	private static String CODE_EXPIRATION;
+	@Value("#{T(Boolean).parseBoolean('${app.code.expiration}')}")
+	private boolean CODE_EXPIRATION;
 	@Value("${app.code.time.expiration}")
-	private static Integer CODE_TIME_EXPIRATION;
-	
+	private Integer CODE_TIME_EXPIRATION;
 	
 	public User save(User user) {
 		if(user.getId() != null) {
@@ -83,11 +91,11 @@ public class UserService {
 	}
 	
 	public User searchByEmail(String email) {
-		List<User> users = userRepository.findByEmail(email);
-		if(userRepository.findByEmail(email).isEmpty()) {
+		Optional<User> users = userRepository.findByEmail(email);
+		if(users.isEmpty()) {
 			throw new EntityNotFoundException(messageSource.getMessage("user.not.found", null, LocaleContextHolder.getLocale()));
 		}
-		return users.get(0);
+		return users.get();
 	}
 
 	public ResponseEntity<Void> delete(Long userId) {
@@ -98,45 +106,46 @@ public class UserService {
 				throw new BusinessException(messageSource.getMessage("invalid.operation.last.user.root", null, LocaleContextHolder.getLocale()));
 			}
 		}
+		user.getBusinesses().forEach(b -> {
+			b.setManager(search(0L));
+			businessRepository.save(b);
+		});
+		user.getBusinessUsers().forEach(b -> {
+			b.setUser(search(0L));
+			businessUserRepository.save(b);
+		});
 		userRepository.deleteById(userId);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(null);
 	}
 
 	public User requireLoginCode(String email, String customTitle, String customMessage) {
-		List<User> users = userRepository.findByEmail(email);
+		Optional<User> userSearch = userRepository.findByEmail(email);
 		String loginCode = GenerateAlphaNumericString.getRandomString(6);
 		User user = new User();
-		if(users.isEmpty()) {
+		if(userSearch.isEmpty()) {
+			user = new User();
 			user.setEmail(email);
 			user.setAuthority(Authority.DEFAULT);
-			if(CODE_EXPIRATION == "true") {
-				Date expirantion = new Date(System.currentTimeMillis() + (CODE_TIME_EXPIRATION * 1000));
-				user.setExpirationCode(expirantion);
-			}
-			String encodeLoginCode = encoder.encode(loginCode);
-			user.setLoginCode(encodeLoginCode);
-			
-			if(customTitle != null) {
-				if(!customTitle.equals("")) {
-					if(customMessage != null) {
-						if(!customMessage.equals("")) {	
-							mailService.sendMail(email, customTitle, customMessage + ": " + loginCode);
-						}else {
-							mailService.sendMail(email, customTitle, messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
-						}
+		}else {
+			user = userSearch.get(); 
+		}
+		if(CODE_EXPIRATION) {
+			Date expirantion = new Date(System.currentTimeMillis() + (CODE_TIME_EXPIRATION * 1000));
+			user.setExpirationCode(expirantion);
+		}
+		String encodeLoginCode = encoder.encode(loginCode);
+		user.setLoginCode(encodeLoginCode);
+		
+		if(customTitle != null) {
+			if(!customTitle.equals("")) {
+				if(customMessage != null) {
+					if(!customMessage.equals("")) {	
+						mailService.sendMail(email, customTitle, customMessage + ": " + loginCode);
 					}else {
 						mailService.sendMail(email, customTitle, messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
 					}
 				}else {
-					if(customMessage != null) {
-						if(!customMessage.equals("")) {	
-							mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), customMessage + ": " + loginCode);
-						}else {
-							mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
-						}
-					}else {
-						mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
-					}
+					mailService.sendMail(email, customTitle, messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
 				}
 			}else {
 				if(customMessage != null) {
@@ -149,16 +158,16 @@ public class UserService {
 					mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
 				}
 			}
-			
-		}else{
-			user = users.get(0);
-			if(CODE_EXPIRATION == "true") {
-				Date expirantion = new Date(System.currentTimeMillis() + (CODE_TIME_EXPIRATION * 1000));
-				user.setExpirationCode(expirantion);
+		}else {
+			if(customMessage != null) {
+				if(!customMessage.equals("")) {	
+					mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), customMessage + ": " + loginCode);
+				}else {
+					mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
+				}
+			}else {
+				mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale()) + ": " + loginCode);
 			}
-			String encodeLoginCode = encoder.encode(loginCode);
-			user.setLoginCode(encodeLoginCode);
-			mailService.sendMail(email, messageSource.getMessage("mail.code.title", null, LocaleContextHolder.getLocale()), messageSource.getMessage("mail.code.content", null, LocaleContextHolder.getLocale())+ ": " + loginCode);
 		}
 		return save(user);
 	}
@@ -166,7 +175,8 @@ public class UserService {
 	public Boolean compareCode(User user) {
 		User researchedUser = searchByEmail(user.getEmail());
 		if(encoder.matches(user.getLoginCode(), researchedUser.getLoginCode())) {
-			if(CODE_EXPIRATION == "true") {
+			System.out.println(researchedUser.getExpirationCode());
+			if(CODE_EXPIRATION) {
 				if(researchedUser.getExpirationCode().before(new Date(System.currentTimeMillis()))) {
 					throw new ExpirationCodeException(messageSource.getMessage("login.code.expiraded", null, LocaleContextHolder.getLocale()));
 				}

@@ -45,7 +45,6 @@ public class User {
 	@Size(max = 255)
 	private String loginCode;
 	
-	@JsonIgnore
 	private Date expirationCode;
 	
 	@Enumerated(EnumType.STRING)

@@ -31,15 +31,15 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter{
 	private AuthenticationManager authenticationManager;
 	@Value("${app.token.attribute}")
-	private static final String TOKEN_ATTRIBUTE = "Authorization";
+	private final String TOKEN_ATTRIBUTE = "Authorization";
 	@Value("${app.token.prefix}")
-	private static final String TOKEN_PREFIX = "Bearer";
+	private final String TOKEN_PREFIX = "Bearer";
 	@Value("${app.token.secret}")
-	private static final String TOKEN_SECRET = "525da2b8-7ccb-485c-b591-01e70ad55574";
+	private final String TOKEN_SECRET = "525da2b8-7ccb-485c-b591-01e70ad55574";
 	@Value("${app.token.expiration}")
-	private static final boolean TOKEN_EXPIRACTION = false;
+	private final boolean TOKEN_EXPIRACTION = false;
 	@Value("${app.token.time.expiration}")
-	private static final long TOKEN_TIME_EXPIRACTION = 86_400_000;
+	private final long TOKEN_TIME_EXPIRACTION = 86_400_000;
 	private static MessageSource messageSource = new LocaleConfig().messageSource();
 	
 	private UserService userService;
@@ -55,12 +55,22 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 		try {
 			User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
-			Collection<? extends GrantedAuthority> authorities = userService.searchByEmail(user.getEmail()).getAuthorities();
-			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				user.getEmail(),
-				user.getLoginCode(),
-				authorities
-			));
+			if(userService.compareCode(user)) {
+				Collection<? extends GrantedAuthority> authorities = userService.searchByEmail(user.getEmail()).getAuthorities();
+				return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+					user.getEmail(),
+					user.getLoginCode(),
+					authorities
+				));
+			} else {
+				response.setStatus(403);
+	    		response.setHeader("Content-Type", "application/json");
+				try {
+					response.getOutputStream().print(ow.writeValueAsString(new AuthenticatinFaildExpirationCode()));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
 		}catch (Exception e) {
     		response.setStatus(401);
     		response.setHeader("Content-Type", "application/json");
@@ -71,6 +81,12 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 			}
 		}
 		return null;
+	}
+	
+	public static class AuthenticatinFaildExpirationCode{
+		public int status = 401;
+		public String dateTime = LocalDateTime.now().toString();         
+		public String title = messageSource.getMessage("login.code.expiraded", null, LocaleContextHolder.getLocale());
 	}
 	
 	public static class AuthenticatinFaildResponse{

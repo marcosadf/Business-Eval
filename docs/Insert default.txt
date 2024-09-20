@@ -1,0 +1,1 @@
+INSERT INTO sys_user (id, name, email, login_code, authority) VALUES (0, 'anonymous', 'anonymous@noserver.com', null, 'ROOT');

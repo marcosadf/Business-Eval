@@ -16,6 +16,7 @@ public class QuestionIn {
 	
 	private Long position;
 	
+	@NotNull
 	private Boolean positive;
 	
 	@NotNull

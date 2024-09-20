@@ -3,6 +3,7 @@ package com.businesseval.domain.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -43,6 +44,9 @@ public class BusinessUser {
 	@NotNull
 	@JoinColumn(name = "user_id")
 	private User user;
+	
+	@Column(columnDefinition = "BOOLEAN DEFAULT false")
+	private Boolean invitationAccepted = false;
 	
 	@OneToMany(mappedBy = "businessUser", cascade = CascadeType.ALL)
 	private List<Answer> answers;

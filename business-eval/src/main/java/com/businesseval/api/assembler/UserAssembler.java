@@ -1,6 +1,7 @@
 package com.businesseval.api.assembler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,5 +49,13 @@ public class UserAssembler {
 
 	public List<UserOut> toCollectionOut(List<User> listUser) {
 		return listUser.stream().map(this::toOut).collect(Collectors.toList());
+	}
+	
+	public Boolean calculateExpirated(Date expirationCode) {
+        if (expirationCode == null) {
+            return null;
+        } else {
+            return expirationCode.before(new Date(System.currentTimeMillis()));
+        }
 	}
 }

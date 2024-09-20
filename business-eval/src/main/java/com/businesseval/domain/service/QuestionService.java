@@ -42,6 +42,7 @@ public class QuestionService {
 			throw new BusinessException(messageSource.getMessage("description.question.exist", null, LocaleContextHolder.getLocale()));
 		}else {
 			long numQuestions = categoryService.search(question.getCategory().getId()).getQuestions().size();
+			System.out.println(numQuestions);
 			question.setPosition(numQuestions + 1);
 		}
 		return questionRepository.save(question);

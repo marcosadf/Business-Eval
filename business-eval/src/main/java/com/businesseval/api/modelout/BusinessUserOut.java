@@ -8,6 +8,8 @@ import lombok.Data;
 public class BusinessUserOut {
 	private Long id;
 	private Long userId;
+	private String userEmail;
 	private Long businessId;
+	private Boolean invitationAccepted;
 	private List<AnswerOut> answers;
 }
